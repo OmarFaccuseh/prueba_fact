@@ -22,10 +22,10 @@ import logging
 from pytz import timezone
 import time, pytz
 
-
-#Agrega al formulario los capos requeridos por el Sat
+# Comentario agregado
+# segundo comentario
+# Agrega al formulario los capos requeridos por el Sat
 BASE_ = base64
-
 
 class localizacion_mexicana(models.Model):
     _name = 'account.invoice'
@@ -44,7 +44,7 @@ class localizacion_mexicana(models.Model):
         else:
             self.id_partner = 0
 
-    id_partner = fields.Integer(compute='compute_id_partner')
+    id_partner = fields.Integer( compute='compute_id_partner' )
 
 
     #Variables del receptor
