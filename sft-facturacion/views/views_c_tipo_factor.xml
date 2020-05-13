@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+    <record model='ir.ui.view' id='cfdi_tipo_factor_tree'>
+      <field name='name'>cfdi.tipo_factor.tree</field>
+      <field name='model'>cfdi.tipo_factor</field>
+      <field name='arch' type='xml'>
+        <tree>
+          <field name='tipo_factor'/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="cfdi_tipo_factor_form">
+      <field name="name">cfdi.tipo_factor.form</field>
+      <field name="model">cfdi.tipo_factor</field>
+      <field name="arch" type="xml">
+        <form string="description">
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name='tipo_factor'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+      
+      <record id="action_cfdi_tipo_factor" model="ir.actions.act_window">
+        <field name="name">Catalogo de Tipos de Factores</field>
+        <field name="res_model">cfdi.tipo_factor</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem id="cfdi_menu_tipo_factor" name="Catalogo de Factores" parent="cfdi_menu_principal" action="action_cfdi_tipo_factor"/>
+  </data>
+</odoo>

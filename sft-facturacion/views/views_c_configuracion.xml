@@ -1,0 +1,47 @@
+<odoo>
+  <data>
+
+    
+    <record model='ir.ui.view' id='cfdi_configuracion_tree'>
+      <field name='name'>cfdi.configuracion.tree</field>
+      <field name='model'>cfdi.configuracion</field>
+      <field name='arch' type='xml'>
+        <tree>
+          <field name='url'/>
+          <field name='usuario'/>
+          <field name='contrasena' password="True"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="cfdi_configuracion_form">
+      <field name="name">cfdi.configuracion.form</field>
+      <field name="model">cfdi.configuracion</field>
+      <field name="arch" type="xml">
+        <form string="description">
+          <header>
+            <button name="validar_usuario" string="Validar Usuario" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'validado')]}" confirm="Desear comprobar el usuario y la Contrasena?" />
+            <button name="volver_a_validar_usuario" string="Volver a Validar Usuario" states="validado" type="object" class="oe_highlight"/>
+            <field name="state" widget="statusbar" nolabel="1" statusbar_visible="validar,validado"/> 
+          </header>
+          <sheet>
+            <group>
+               <field name='url' limit="1"/>
+               <field name='usuario' />
+               <field name='contrasena' password="True"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+      <record id="action_cfdi_configuracion" model="ir.actions.act_window">
+        <field name="name">Configuracion del Timbrado de la Factura Electronica</field>
+        <field name="res_model">cfdi.configuracion</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem id="cfdi_menu_configuracion" name="Configuración" parent="sft_facturacion_menu_principal" action="action_cfdi_configuracion"/>
+  </data>
+</odoo>

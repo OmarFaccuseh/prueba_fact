@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+    <record model='ir.ui.view' id='cfdi_tasa_cuota_tree'>
+      <field name='name'>cfdi.tasa_cuota.tree</field>
+      <field name='model'>cfdi.tasa_cuota</field>
+      <field name='arch' type='xml'>
+        <tree>
+           <field name='rango_o_fijo'/>
+           <field name='valor_minimo'/>
+           <field name='valor_maximo'/>
+           <field name='impuesto'/>
+           <field name='factor'/>
+           <field name='traslado'/>
+           <field name='retencion'/>
+           <field name='fecha_inicio_vigencia'/>
+           <field name='fecha_fin_vigencia'/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="cfdi_tasa_cuota_form">
+      <field name="name">cfdi.tasa_cuota.form</field>
+      <field name="model">cfdi.tasa_cuota</field>
+      <field name="arch" type="xml">
+        <form string="description">
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name='rango_o_fijo'/>
+              <field name='valor_minimo'/>
+              <field name='valor_maximo'/>
+              <field name='impuesto'/>
+              <field name='factor'/>
+              <field name='traslado'/>
+              <field name='retencion'/>
+              <field name='fecha_inicio_vigencia'/>
+              <field name='fecha_fin_vigencia'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+      
+      <record id="action_cfdi_tasa_cuota" model="ir.actions.act_window">
+        <field name="name">Catálogo de tasas o cuotas de impuestos.</field>
+        <field name="res_model">cfdi.tasa_cuota</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem id="cfdi_menu_tasas_o_cuotas_de_impuestos" name="Catálogo de tasas o cuotas de impuestos.
+" parent="cfdi_menu_principal" action="action_cfdi_tasa_cuota"/>
+  </data>
+</odoo>

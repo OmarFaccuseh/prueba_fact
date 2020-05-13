@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <data noupdate="1">
+        <!--<record id="id_cron_catalogos_id" model="ir.cron">
+            <field name="name">Proceso de cancelación</field>
+            <field name="active">True</field>
+            <field name="priority">5</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="model">account.sat_pendiente_cancelacion</field>
+            <field name="function">consulta_automatica_sft</field>
+        </record>-->
+
+        <record id="id_cron_catalogos_id" model="ir.cron">
+            <field name="name">SFT-Facturación-Sincroniza</field>
+            <field name="active">True</field>
+            <field name="priority">5</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <!--<field name="model_id">-1</field>-->
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(datetime.utcnow() + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:00')" />
+            <field name="model_id" ref="model_cfdi_configuracion"/>
+            <field name="state">code</field>
+            <field name="code">model.sincronizaCatalogos()</field>
+        </record>
+
+        <record id="cfdi_configuracion_1" model="cfdi.configuracion" >
+            <field name="url">http://portal.sft-facturacion.com/</field>
+            <field name="usuario">prueba</field>
+            <field name="contrasena">contrasena</field>
+        </record>
+    </data>
+</odoo>

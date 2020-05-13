@@ -1,0 +1,48 @@
+<odoo>
+  <data>
+    <record model='ir.ui.view' id='cfdi_impuestos_tree'>
+      <field name='name'>cfdi.impuestos.tree</field>
+      <field name='model'>cfdi.impuestos</field>
+      <field name='arch' type='xml'>
+        <tree>
+          <field name='c_impuesto'/>
+          <field name='descripcion'/>
+          <field name='retencion'/>
+          <field name='traslado'/>
+          <field name='local_o_federal'/>
+          <field name='entidad_en_quien_se_aplica'/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="cfdi_impuestos_form">
+      <field name="name">cfdi.impuestos.form</field>
+      <field name="model">cfdi.impuestos</field>
+      <field name="arch" type="xml">
+        <form string="description">
+          <header>
+          </header>
+          <sheet>
+            <group>
+               <field name='c_impuesto'/>
+               <field name='descripcion'/>
+               <field name='retencion'/>
+               <field name='traslado'/>
+               <field name='local_o_federal'/>
+               <field name='entidad_en_quien_se_aplica'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+      
+      <record id="action_cfdi_impuestos" model="ir.actions.act_window">
+        <field name="name">Catálogo de impuestos.</field>
+        <field name="res_model">cfdi.impuestos</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem id="cfdi_menu_impuestos" name="Impuestos" parent="cfdi_menu_principal" action="action_cfdi_impuestos"/>
+  </data>
+</odoo>

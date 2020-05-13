@@ -1,0 +1,44 @@
+<odoo>
+  <data>
+    <record model='ir.ui.view' id='cfdi_codigo_postal_tree'>
+      <field name='name'>cfdi.codigo_postal.tree</field>
+      <field name='model'>cfdi.codigo_postal</field>
+      <field name='arch' type='xml'>
+        <tree>
+          <field name='c_codigopostal'/>
+          <field name='c_estado'/>
+          <field name='c_municipio'/>
+          <field name='c_localidad'/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="cfdi_codigo_postal_form">
+      <field name="name">cfdi.codigo_postal.form</field>
+      <field name="model">cfdi.codigo_postal</field>
+      <field name="arch" type="xml">
+        <form string="description">
+          <header>
+          </header>
+          <sheet>
+            <group>
+               <field name='c_codigopostal'/>
+               <field name='c_estado'/>
+               <field name='c_municipio'/>
+               <field name='c_localidad'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+      
+      <record id="action_cfdi_codigo_postal" model="ir.actions.act_window">
+        <field name="name">Catálogo de códigos postales.</field>
+        <field name="res_model">cfdi.codigo_postal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem id="cfdi_menu_codigo_postal" name="Codigos Postales" parent="cfdi_menu_principal" action="action_cfdi_codigo_postal"/>
+  </data>
+</odoo>

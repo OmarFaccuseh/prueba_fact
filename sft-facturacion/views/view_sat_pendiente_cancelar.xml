@@ -1,0 +1,88 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="account_SATPendienteCancelacion_tree">
+      <field name="name">account.sat_pendiente_cancelacion.tree</field>
+      <field name="model">account.sat_pendiente_cancelacion</field>
+      <field name="arch" type="xml">
+        <tree create="false" default_order='id desc'>
+          <field name="UUID"/>
+          <field name="estado"/>
+          <field name="fecha_respuesta"/>
+          <field name="usuario_respuesta"/>
+          <field name="compania_rfc"/>
+          <field name="servicio_mensaje"/>
+
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="account_SATPendienteCancelacion_form">
+      <field name="name">account.sat_pendiente_cancelacion.form</field>
+      <field name="model">account.sat_pendiente_cancelacion</field>
+      <field name="arch" type="xml">
+        <form string="Aceptación de cancelación de CFDI" edit="false" create="false">
+          <sheet>
+            <group>
+              <field name="UUID"/>
+              <field name="estado" readonly="1"/>
+              <field name="fecha_respuesta" readonly="1"/>
+              <field name="usuario_respuesta" readonly="1"/>
+              <field name="compania_rfc" readonly="1"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+
+
+      <record model="ir.actions.server" id="aceptar_cancelacion">
+            <field name="name">Aceptar cancelación</field>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_account_sat_pendiente_cancelacion" />
+            <field name="state">code</field>
+            <field name="code">
+                if context.get('active_model') == 'account.sat_pendiente_cancelacion' and context.get('active_ids'):
+                    action = env['account.sat_pendiente_cancelacion'].browse(context['active_ids']).aceptar()
+            </field>
+        </record>
+        <!--<record id="aceptar_cancelacion_values" model="ir.values">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'account.sat_pendiente_cancelacion'" name="model"/>
+            <field name="name">Aceptar cancelación</field>
+            <field eval="'ir.actions.server,%d'%aceptar_cancelacion" name="value"/>
+        </record>-->
+
+
+      <record model="ir.actions.server" id="rechazar_cancelacion">
+            <field name="name">Rechazar cancelación</field>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_account_sat_pendiente_cancelacion" />
+            <field name="state">code</field>
+            <field name="code">
+                if context.get('active_model') == 'account.sat_pendiente_cancelacion' and context.get('active_ids'):
+                    action = env['account.sat_pendiente_cancelacion'].browse(context['active_ids']).rechazar()
+            </field>
+        </record>
+        <!--<record id="rechazar_cancelacion_values" model="ir.values">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'account.sat_pendiente_cancelacion'" name="model"/>
+            <field name="name">Rechazar cancelacion</field>
+            <field eval="'ir.actions.server,%d'%rechazar_cancelacion" name="value"/>
+        </record>-->
+
+
+    <record id="action_account_SATPendienteCancelacion" model="ir.actions.act_window">
+        <field name="name">Aceptar cancelación</field>
+        <field name="res_model">account.sat_pendiente_cancelacion</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+    <!--<menuitem name="SFT-Ayuda" id="sft_ayuda1_menu_principal"/>-->
+    <menuitem name="Aceptar Cancelación" id="account_SATPendienteCancelacion" action="action_account_SATPendienteCancelacion" parent="account.menu_finance_payables"/>
+  </data>
+</odoo>

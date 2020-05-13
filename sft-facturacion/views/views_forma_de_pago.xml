@@ -1,0 +1,64 @@
+<odoo>
+  <data>
+    <record model='ir.ui.view' id='cfdi_forma_pago_tree'>
+      <field name='name'>cfdi.forma_pago.tree</field>
+      <field name='model'>cfdi.forma_pago</field>
+      <field name='arch' type='xml'>
+        <tree>
+          <field name='c_forma_pago'/>
+          <field name='descripcion'/>
+          <field name='bancarizado'/>
+          <field name='num_op'/>
+          <field name='rfc_emisor'/>
+          <field name='cuenta_ordenante'/>
+          <field name='patron_cta_ordenante'/>
+          <field name='rfc_emisor_cta_benef'/>
+          <field name='cta_benenf'/>
+          <field name='patron_cta_benef'/>
+          <field name='tipo_cad_pago'/>
+          <field name='nom_banco_emisor_cta_ord_ext'/>
+          <field name='fecha_inicio_de_vigencia'/>
+          <field name='fecha_fin_de_vigencia'/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="cfdi_forma_pago_form">
+      <field name="name">cfdi.forma_pago.form</field>
+      <field name="model">cfdi.forma_pago</field>
+      <field name="arch" type="xml">
+        <form string="description">
+          <header>
+          </header>
+          <sheet>
+            <group>
+               <field name='c_forma_pago'/>
+               <field name='descripcion'/>
+               <field name='bancarizado'/>
+               <field name='num_op'/>
+               <field name='rfc_emisor'/>
+               <field name='cuenta_ordenante'/>
+               <field name='patron_cta_ordenante'/>
+               <field name='rfc_emisor_cta_benef'/>
+               <field name='cta_benenf'/>
+               <field name='patron_cta_benef'/>
+               <field name='tipo_cad_pago'/>
+               <field name='nom_banco_emisor_cta_ord_ext'/>
+               <field name='fecha_inicio_de_vigencia'/>
+               <field name='fecha_fin_de_vigencia'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+      <record id="action_cfdi_forma_pago" model="ir.actions.act_window">
+        <field name="name">Catalogo de Formas de Pago</field>
+        <field name="res_model">cfdi.forma_pago</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem id="cfdi_menu_forma_de_pago" name="Forma de Pago" parent="cfdi_menu_principal" action="action_cfdi_forma_pago"/>
+  </data>
+</odoo>

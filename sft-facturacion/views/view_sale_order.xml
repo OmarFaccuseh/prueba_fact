@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sale_order_global_invoice_form">
+             <field name="name">sale.order.global.invoice.form</field>
+             <field name="model">sale.order.global_invoice</field>
+             <field name="arch" type="xml">
+                 <form string="description">
+                     <header>
+                     </header>
+                     <sheet>
+                         <h1>
+                             <label string="Wizard Factura Global"/>
+                         </h1>
+                         <group>
+                       <field name="partner_id"/>
+                       <field name="date"/>
+                       <field name="product_id"/>
+                   </group>
+                         <footer>
+                            <button name="Generar_Factura_Global" string="Generar Factura" type="object" class="oe_highlight" />
+                         </footer>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+        <record id="action_create_sale_global_invoice" model="ir.actions.act_window">
+            <field name="name">Factura Global</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order.global_invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale_order_global_invoice_form"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+        <record model="ir.values" id="ir_values_create_delivery_button">
+            <!--<field name="model_id" ref="sale.model_sale_order_line" />-->
+            <field name="name">Crear Factura Global</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_create_sale_global_invoice'))" />
+            <field name="key">action</field>
+            <field name="model">sale.order</field>
+        </record>
+
+
+
+
+
+    </data>
+</odoo>

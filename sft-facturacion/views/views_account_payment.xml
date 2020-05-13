@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <data>
+      <record id="account_payment_sat_invoice_view" model="ir.ui.view">
+         <field name="name">account.payment.form</field>
+         <field name="model">account.payment</field>
+         <field name="inherit_id" ref="account.view_account_payment_invoice_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='communication']" position="after">
+               <field name='es_proveedor' invisible="1"/>
+
+               <!--<field name="tipocambiop" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />-->
+               <field name="formadepagop_id" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)]}" />
+               <!--<field name="moneda_p" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />
+                <field name="moneda_factura" readonly="1" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />
+               <field name="imp_saldo_ant" options="{'currency_field': 'moneda_factura'}" readonly="1" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />-->
+
+                <!--<field name="imp_pagado"  options="{'currency_field': 'moneda_factura'}" readonly="1" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />-->
+                <!--<field name="imp_saldo_insoluto"  options="{'currency_field': 'moneda_factura'}" readonly="1" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />-->
+               <field name="no_operacion" attrs="{'required': [('es_proveedor', '=', False)], 'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)]}" />
+                <!--<field name="no_parcialidad" readonly="1" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />-->
+               <field name="uuid" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)]}" />
+               <field name="ocultar" invisible="1" />
+               <field name="timbrar_pago" invisible="1" />
+               <field name="ref" invisible="1" />
+            </xpath>
+            <xpath expr="//div[@name='amount_div']" position="after">
+               <field name="sustituye_pago" attrs="{'invisible':['|', ('es_proveedor', '=', True)]}"/>
+               <field name="pago_sustituye" domain="['&amp;',('ref', '=', ref),('state', '=', 'cancelled')]" attrs="{'invisible':[('sustituye_pago', '=', False)]}" options="{'no_create': True, 'no_create_edit':True}"  />
+
+            </xpath>
+            <!--<xpath expr="//field[@name='currency_id']" position="after">
+               <field name="tipocambio_oper"  />
+            </xpath>-->
+
+
+            <xpath expr="/form/sheet[1]/group[1]/group[2]" position="after">
+               <group attrs="{'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)]}">
+                  <div colspan="2">
+                     <center>
+                        <span>
+                           <h3 style="display:inline">Mis Datos bancarios</h3>
+                        </span>
+                     </center>
+                  </div>
+
+                  <field name="rfc_emisor_cta_ben" editable="true" attrs="{'invisible':[('ocultar', '=', True)]}" />
+                  <field name="cta_beneficiario" attrs="{'invisible':[('ocultar', '=', True)]}" />
+               </group>
+               <group attrs="{'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)]}">
+                  <div colspan="2">
+                     <center>
+                        <span>
+                           <h3 style="display:inline">Datos bancarios de mi cliente</h3>
+                        </span>
+                     </center>
+                  </div>
+                  <field name="nom_banco_ord_ext_id" attrs="{'invisible':[('ocultar', '=', True)]}" />
+                  <field name="rfc_emisor_cta_ord" attrs="{'invisible':[('ocultar', '=', True)]}" />
+                  <field name="cta_ordenante" attrs="{'invisible':[('ocultar', '=', True)]}" />
+                  <field name="timbrar_pago" invisible="1" />
+               </group>
+            </xpath>
+            <xpath expr="/form/footer/button" position="after">
+               <button name="Validar_y_Timbrar_Pago" string="Validar y Timbrar" icon="fa-cloud-upload" class="oe_highlight" type="object" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)]}" />
+            </xpath>
+            <!--<xpath expr="/form/footer/button[@name='post']" position="replace">
+               <button name="Validar_Pago" string="Validar" type="object" class="oe_highlight" icon="fa-check" />
+            </xpath>-->
+
+         </field>
+      </record>
+
+
+      <!-- todo add omar -->
+      <record id="inherit_view_res_bank_form" model="ir.ui.view">
+         <field name="name">inherit.view.res.bank.form</field>
+         <field name="model">res.bank</field>
+         <field name="inherit_id" ref="base.view_res_bank_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+               <field name="banco_sft"/>
+            </xpath>
+         </field>
+      </record>
+
+
+      <record id="account_journal_sat_form_view" model="ir.ui.view">
+         <field name="name">account.journal.form</field>
+         <field name="model">account.journal</field>
+         <field name="inherit_id" ref="account.view_account_journal_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='bank_id']" position="after">
+               <field name="rfc_institucion_bancaria" />
+            </xpath>
+         </field>
+      </record>
+
+
+      <!--<record id="account_move_sat_form_view" model="ir.ui.view">
+         <field name="name">account.move.form</field>
+         <field name="model">account.move</field>
+         <field name="inherit_id" ref="account.view_move_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after" />
+            <xpath expr="//field[@name='ref']" position="attributes">
+               <atribute name="attrs">{'readonly':[('move_timbrada','=','Timbrada')]}"</atribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='ref']" position="after">
+               <tr >
+                  <td>
+                     <span>
+                        <h3 style="display:inline" attrs="{'invisible':[('move_puede_timbrar','=',False)]}">Informacion del Pago</h3>
+                     </span>
+                  </td>
+                  <td>
+                     <span />
+                  </td>
+               </tr>
+                <field name="move_puede_timbrar"  invisible="1" />
+               <field name="move_puede_editar"  invisible="0" />
+
+               <field name="move_no_parcialidad" attrs="{'readonly':[('move_puede_editar','=',False)], 'invisible':[('move_puede_timbrar','=',False)]}" />
+                <field name="move_no_operacion" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_formadepagop_id" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_moneda_p" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_tipocambiop" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_imp_saldo_ant" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_imp_pagado" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_imp_saldo_insoluto" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_uuid" attrs="{'readonly':True,'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_timbrada" attrs="{'readonly':True,'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="sustituye_pago" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}"  />
+               <field name="pago_sustituye"  domain="['&amp;',('ref_factura', '=', ref),('state', '=', 'canceled')]"
+                      attrs="{'invisible':[('sustituye_pago', '=', False)], 'readonly':[('move_puede_editar','=',False)]}"
+                      options="{'no_create': True, 'no_create_edit':True}"  />
+               <field name="move_uso_cfdi_id" invisible="1" />
+               <field name="ref_factura" invisible="1" />
+               <separator colspan="2" />
+               <separator colspan="2" />
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+               <attribute name="attrs">{'readonly':[('move_puede_editar','=',False)],'required':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+               <attribute name="attrs">{'readonly':[('move_puede_editar','=',False)],'required':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='ref']" position="attributes">
+               <attribute name="attrs">{'readonly':[('move_puede_editar','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="after">
+               <tr>
+                  <td>
+                     <span>
+                        <h3 style="display:inline" attrs="{'invisible':[('move_puede_timbrar','=',False)]}">Informacion del Timbre</h3>
+                     </span>
+                  </td>
+                  <td>
+                     <span />
+                  </td>
+               </tr>
+               <separator colspan="2" />
+               <separator colspan="2" />
+               <field name="move_uuid_ref" attrs="{'readonly':True,'invisible':[('move_puede_timbrar','=',False)]}" />
+                <tr>
+                  <td colspan="2">
+                     <span>
+                        <h3 style="display:inline" attrs="{'invisible':[('move_puede_timbrar','=',False)]}">Mis datos bancarios</h3>
+                     </span>
+                  </td>
+               </tr>
+                <separator colspan="2" />
+               <separator colspan="2" />
+
+                <field name="move_rfc_emisor_cta_ben" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+                <field name="move_cta_beneficiario" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+
+               <tr>
+                  <td colspan="2">
+                     <span>
+                        <h3 style="display:inline"  attrs="{'invisible':[('move_puede_timbrar','=',False)]}">Datos bancarios de mi cliente</h3>
+                     </span>
+                  </td>
+               </tr>
+               <separator colspan="2" />
+               <separator colspan="2" />
+                <field name="move_nom_banco_ord_ext_id" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <field name="move_rfc_emisor_cta_ord" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+
+               <field name="move_cta_ordenante" attrs="{'readonly':[('move_puede_editar','=',False)],'invisible':[('move_puede_timbrar','=',False)]}" />
+               <separator colspan="2" />
+               <separator colspan="2" />
+
+
+
+            </xpath>
+            <xpath expr="/form/header/button" position="after">
+               <button name="timbrar_pago" attrs="{'invisible': ['|',('move_timbrada','!=','Sin Timbrar'),('move_puede_timbrar','=',False) ]}" type="object" string="Timbrar Pago" class="oe_highlight" />
+               <button name="descargar_factura_pdf" attrs="{'invisible': [('move_timbrada','=','Sin Timbrar')]}" type="object" string="Descargar Factura PDF" icon="fa-file-pdf-o" />
+               <button name="descargar_factura_xml" attrs="{'invisible': [('move_timbrada','=','Sin Timbrar')]}" type="object" string="Descargar Archivo XML" icon="fa-file-text" />
+               <button name="cancelar_pagos_timbrada" string="Cancelar Timbre del Pago" icon="fa-times" type="object" attrs="{'invisible': [('move_timbrada','!=','Timbrada')]}" />
+            </xpath>
+         </field>
+      </record>-->
+
+
+
+
+
+      <record id="account_payment_sft_pago_view" model="ir.ui.view">
+         <field name="name">account.payment.form</field>
+         <field name="model">account.payment</field>
+         <field name="inherit_id" ref="account.view_account_payment_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='communication']" position="after">
+               <!--  'readonly':[('puede_editar','=',False)],   -->
+               <field name='es_proveedor' invisible="1"/>
+               <field name="timbrar_pago" attrs="{'invisible':[('es_proveedor', '=', True)]}"/>
+
+               <!--<field name="tipocambiop" attrs="{'invisible':[('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}" />-->
+               <field name="formadepagop_id" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)] }" />
+               <!--<field name="moneda_factura" attrs="{'invisible':[('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}" />-->
+
+               <!--<field name="moneda_p" attrs="{'invisible':[('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}"  />-->
+
+               <field name="no_operacion" attrs="{'required': [('es_proveedor', '=', False)],'invisible':['|', ('es_proveedor', '=', True), ('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}" />
+               <!--<field name="no_parcialidad" attrs="{'invisible':[('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}"  />-->
+
+               <field name="puede_editar" invisible="1"/>
+
+
+            </xpath>
+
+            <xpath expr="//field[@name='amount']" position="attributes">
+               <attribute name="readonly">0</attribute>
+            </xpath>
+             <xpath expr="//field[@name='amount']" position="after">
+                <field name="tipocambiop" attrs="{'invisible':[('timbrar_pago', '=', False)]}" />
+            </xpath>
+
+
+
+            <xpath expr="/form/sheet[1]/group[1]/group[2]" position="after">
+               <group attrs="{'invisible':['|', ('es_proveedor', '=', True), ('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}">
+                  <div colspan="2">
+                     <center>
+                        <span>
+                           <h3 style="display:inline">Mis Datos bancarios</h3>
+                        </span>
+                     </center>
+                  </div>
+                  <field name="rfc_emisor_cta_ben" editable="true" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}" />
+                  <field name="cta_beneficiario" attrs="{'invisible':[('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}" />
+               </group>
+               <group attrs="{'invisible':['|', ('es_proveedor', '=', True), ('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}">
+                  <div colspan="2">
+                     <center>
+                        <span>
+                           <h3 style="display:inline">Datos bancarios de mi cliente</h3>
+                        </span>
+                     </center>
+                  </div>
+                  <field name="nom_banco_ord_ext_id" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}" />
+                  <field name="rfc_emisor_cta_ord" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}" />
+                  <field name="cta_ordenante" attrs="{'invisible':['|', ('es_proveedor', '=', True), ('ocultar', '=', True)], 'readonly':[('puede_editar','=',False)]}" />
+                  <field name="timbrar_pago" invisible="1" />
+               </group>
+            </xpath>
+
+            <!--<xpath expr="//div[@name='amount_div']" position="after">-->
+             <xpath expr="//field[@name='journal_id']" position="after">
+               <field name="timbrada" attrs="{'invisible':[('es_proveedor', '=', True)]}"/>
+               <!--<field name="tipocambio_oper" />-->
+
+               <field name="ocultar" invisible="1" />
+               <field name="timbrar_pago" invisible="1" />
+               <field name="ref" invisible="1" />
+               <field name="puede_cancelar" invisible="1"  />
+               <field name="sustituye_pago" attrs="{'invisible':['|', ('es_proveedor', '=', True),('timbrar_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}" />
+               <field name="pago_sustituye" domain="['&amp;',('ref', '=', ref),('state', '=', 'cancelled')]" attrs="{'invisible':[('sustituye_pago', '=', False)], 'readonly':[('puede_editar','=',False)]}" options="{'no_create': True, 'no_create_edit':True}"  />
+
+            </xpath>
+
+            <xpath expr="/form/sheet" position="inside">
+               <notebook colspan="4">
+                  <page string="Documentos relacionados" attrs="{'invisible':[('es_proveedor', '=', True)]}">
+                     <field name="documentos_relacionados" nolabel="1" widget="one2many_list" context="{'default_id_cliente':partner_id}" >
+                        <tree string="Invoice Lines" editable="bottom">
+                           <field name="domain_facturas"  invisible="1"  />
+                           <field name="id_cliente" readonly="1" invisible="1" />
+
+                           <!-- domain="[('id', 'in', domain_facturas)]"-->
+                            <field name="invoice_id" required="1" options="{'no_create': True, 'no_create_edit':True}" domain="[('partner_id','=',id_cliente),('state','in',['open','timbrada','validate'])]" />
+                           <!-- domain="[('partner_id','=',id_cliente),('state','in',['open','timbrada']),('residual','&gt;','0')]" -->
+                           <field name="uuid_documento" attrs="{'readonly':True}" />
+                            <field name="moneda_dr" readonly="1" />
+                           <field name="tipocambio_dr" readonly="1"  />
+                            <field name="imp_saldo_ant" widget="monetary" readonly="1" />
+                           <field name="importe_pagado"  readonly="1" widget="monetary" />
+
+                            <field name="imp_saldo_insoluto" readonly="1" widget="monetary" />
+                           <field name="importe_pagado_moneda" widget="monetary" />
+
+                        </tree>
+                     </field>
+                  </page>
+               </notebook>
+
+            </xpath>
+
+
+
+
+
+            <xpath expr="/form/header/button" position="after">
+               <button name="Validar_y_Timbrar_Pago" attrs="{'invisible': ['|','|',('es_proveedor', '=', True),('timbrada','!=','Sin Timbrar'),('timbrar_pago','=',False) ]}" type="object" string="Timbrar Pago" class="oe_highlight" />
+               <button name="descargar_factura_pdf" attrs="{'invisible': [('timbrada','!=','Timbrada') ]}" type="object" string="Descargar Factura PDF" icon="fa-file-pdf-o" />
+               <button name="descargar_factura_xml" attrs="{'invisible': [('timbrada','!=','Timbrada') ]}" type="object" string="Descargar Archivo XML" icon="fa-file-text" />
+
+               <button name="cancelar_pagos_timbrada"  attrs="{'invisible': ['|',('timbrada','!=','Timbrada'),('timbrar_pago','=',False) ]}"    string="Cancelar Timbre del Pago" icon="fa-times" type="object" />
+            </xpath>
+
+
+
+         </field>
+      </record>
+      <record id="payment_cancel_form_inherit_sft" model="ir.ui.view">
+            <field name="name">payment.cancel.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account_cancel.payment_cancel_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='cancel']"  position="attributes">
+                  <attribute name="attrs">{'invisible': [('puede_cancelar', '=',False)]}</attribute>
+               </xpath>
+            </field>
+        </record>
+
+
+      <record id="account_payment_term_form_sft" model="ir.ui.view">
+         <field name="name">account_payment_term_form_sft</field>
+         <field name="model">account.payment.term</field>
+         <field name="inherit_id" ref="account.view_payment_term_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+               <field name="metodo_pago_id" />
+            </xpath>
+         </field>
+      </record>
+
+
+
+
+   </data>
+</odoo>
